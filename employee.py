@@ -1,10 +1,8 @@
 from db import c, conn
 
-
 """
 PK - Primary Key
 """
-
 
 
 class Employee(object):
@@ -69,15 +67,14 @@ class Employee(object):
         else:
             raise ValueError("Can't compare Employee with {}".format(type(other)))
 
-
-
     @classmethod
-    def get_list(csl,**kwargs):
-    
+    def get_list(cls, **kwargs):
+
         if kwargs:
             query = "SELECT * FROM employee WHERE "
             query += " AND ".join([f"{key} = ?" for key in kwargs.keys()])
             result = c.execute(query, tuple(kwargs.values()))
         else:
             result = c.execute("SELECT * FROM employee")
-        return [Employee(values["name"], values["surname"], values["age"], values["id"]) for values in result.fetchall()]
+        return [cls(values["name"], values["surname"], values["age"], values["id"]) for values in
+                result.fetchall()]
